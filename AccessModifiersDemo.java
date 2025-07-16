@@ -1,48 +1,67 @@
-/* ---------- 1. Abstract base (cannot be instantiated) ---------- */
-abstract class Shape {
-    /* default (package‑private) modifier below */
-    double area;                       // visible to same package
+// Main class is public
+public class AccessModifierExample {
 
-    /* abstract → subclass must give a body */
-    abstract void calculateArea();
+    // static variable (shared among all objects)
+    static int staticCount = 0;
 
-    /* final → cannot be overridden further */
-    public final void printArea() {
-        System.out.println("Area = " + area);
-    }
-}
+    // final variable (constant, value can't be changed)
+    final int finalId;
 
-/* ---------- 2. Concrete subclass ---------- */
-class Circle extends Shape {
-    private double radius;             // private → only Circle
+    // private variable (accessible only inside this class)
+    private String privateMessage = "This is PRIVATE.";
 
-    /* static field → common to *all* circles */
-    static final double PI = 3.14159;  // final & static
+    // default variable (no modifier, accessible only within same package)
+    String defaultMessage = "This is DEFAULT (package-private).";
 
-    Circle(double radius) {
-        this.radius = radius;
-    }
+    // protected variable (accessible in same package or subclass)
+    protected String protectedMessage = "This is PROTECTED.";
 
-    /* public method overriding Shape.calculateArea() */
-    @Override
-    public void calculateArea() {
-        area = PI * radius * radius;
+    // public variable (accessible from anywhere)
+    public String publicMessage = "This is PUBLIC.";
+
+    // Constructor
+    public AccessModifierExample(int id) {
+        finalId = id; // final can be assigned once (here in constructor)
+        staticCount++; // static variable incremented
     }
 
-    /* protected helper → visible to subclasses & same package */
-    protected double getRadius() {
-        return radius;
+    // private method (only this class can call it)
+    private void showPrivateMessage() {
+        System.out.println(privateMessage);
     }
-}
 
-/* ---------- 3. Main driver class ---------- */
-public class AccessModifiersDemo {
+    // default method (accessible within same package)
+    void showDefaultMessage() {
+        System.out.println(defaultMessage);
+    }
+
+    // protected method (accessible in subclass or same package)
+    protected void showProtectedMessage() {
+        System.out.println(protectedMessage);
+    }
+
+    // public method (accessible from anywhere)
+    public void showPublicMessage() {
+        System.out.println(publicMessage);
+    }
+
+    // Method to show all messages using access modifiers
+    public void showAllMessages() {
+        showPrivateMessage();
+        showDefaultMessage();
+        showProtectedMessage();
+        showPublicMessage();
+        System.out.println("Final ID: " + finalId);
+        System.out.println("Static Count: " + staticCount);
+    }
+
+    // Main method (entry point of the program)
     public static void main(String[] args) {
-        Circle c = new Circle(5);
-        c.calculateArea();
-        c.printArea();      // uses final method from Shape
-        // System.out.println(c.radius); // ← compile error (private)
-        System.out.println("Radius (via protected getter) = " +
-                           c.getRadius());
+        AccessModifierExample obj1 = new AccessModifierExample(101);
+        AccessModifierExample obj2 = new AccessModifierExample(102);
+
+        obj1.showAllMessages();
+        System.out.println("------------------------");
+        obj2.showAllMessages();
     }
 }
